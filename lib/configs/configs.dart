@@ -18,6 +18,16 @@ class Config {
   static const dreaming = "assets/images/Knorrie_Slaapt.png";
   static const doIt = "assets/images/Knorrie_Stipit.png";
   static const soccer = "assets/images/Knorrie_Voetbalt.png";
+  static const kidImage = 'assets/images/kid.jpg';
+  static const soccer_icon = 'assets/images/icon_soccer.png';
+
+  //games images
+  static const math_game = 'assets/images/games/blackboard.png';
+  static const memory_game = 'assets/images/games/card-games.png';
+  static const quiz_game = 'assets/images/games/choose.png';
+  static const asign_game = 'assets/images/games/distribution.png';
+
+  static const error_image = 'assets/images/error.png';
   static const Color yallow = Color(0xffebd216);
   static const Color perpel = Color(0xff303289);
   static const Color blue = Color(0xff1877f2);

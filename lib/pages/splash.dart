@@ -41,12 +41,12 @@ class _SplashState extends State<Splash> {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-      body: CustomPaint(
-        foregroundPainter: ShapePainter(),
-        child: Container(
-          height: screenSize(context).height,
-          width: screenSize(context).width,
-          decoration: const BoxDecoration(color: Config.yallow),
+      body: Container(
+        height: screenSize(context).height,
+        width: screenSize(context).width,
+        decoration: const BoxDecoration(color: Config.yallow),
+        child: CustomPaint(
+          painter: ShapePainter(),
           child: Column(
             children: [
               SizedBox(
@@ -88,14 +88,15 @@ class _SplashState extends State<Splash> {
                   ),
                 ],
               ),
+              Spacer(),
               Text(
                 'V 1.0',
                 style: TextStyle(
-                  fontSize: 15,
+                  fontSize: 12,
                   letterSpacing: 2,
                   color: Colors.grey,
                 ),
-              ).paddingOnly(top: 180),
+              ).paddingOnly(bottom: 10),
             ],
           ),
         ),

@@ -4,7 +4,8 @@ import 'package:soccer_app/services/services.dart';
 
 class DefaultInput extends StatelessWidget {
   DefaultInput(
-      {required this.label,
+      {required this.controller,
+      required this.label,
       required this.icon,
       this.showPassword,
       this.isObsecure = false,
@@ -14,6 +15,7 @@ class DefaultInput extends StatelessWidget {
   final bool isObsecure;
   final bool isPassword;
   final Function()? showPassword;
+  final TextEditingController controller;
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +30,7 @@ class DefaultInput extends StatelessWidget {
         Container(
           width: screenSize(context).width * .9,
           child: TextFormField(
+            controller: controller,
             validator: (value) {
               if (value == null || value.isEmpty) {
                 if (!isPassword) {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:soccer_app/pages/activate_code_page.dart';
 import 'package:soccer_app/pages/login_page.dart';
 import 'package:soccer_app/services/services.dart';
 import 'package:soccer_app/widgets/TextInput.dart';
@@ -15,16 +16,28 @@ class _SignupPageState extends State<SignupPage> {
   bool isObsecure = true;
   bool isChecked = false;
   final formKey = GlobalKey<FormState>();
+  late TextEditingController _emailController,
+      _userNameController,
+      _passwordController;
+  @override
+  void initState() {
+    _emailController = TextEditingController();
+    _passwordController = TextEditingController();
+    _userNameController = TextEditingController();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: CustomPaint(
-        foregroundPainter: ShapePainter(),
-        child: SingleChildScrollView(
-          child: Container(
-              height: screenSize(context).height,
-              width: screenSize(context).width,
-              color: Config.perpel,
+      body: SingleChildScrollView(
+        primary: true,
+        child: Container(
+          height: screenSize(context).height,
+          width: screenSize(context).width,
+          color: Config.perpel,
+          child: CustomPaint(
+              painter: LoginShapePainter(),
               child: Form(
                 key: formKey,
                 child: Column(
@@ -41,20 +54,23 @@ class _SignupPageState extends State<SignupPage> {
                         ),
                     Align(
                       alignment: Alignment.topLeft,
-                      child: Text("Inscherjiven",
+                      child: Text("Inschrijven",
                               style: GoogleFonts.ubuntu(
                                   fontSize: 40, color: Colors.white))
-                          .paddingOnly(left: 20, bottom: 30),
+                          .paddingOnly(left: 20, bottom: 10),
                     ),
                     DefaultInput(
+                      controller: _emailController,
                       label: "Email",
                       icon: Ionicons.mail_outline,
                     ),
                     DefaultInput(
+                      controller: _userNameController,
                       label: "Gebruikersnaam",
                       icon: Ionicons.person_outline,
                     ),
                     DefaultInput(
+                      controller: _passwordController,
                       label: "Wachtwoord",
                       icon: Ionicons.lock_closed_outline,
                       isObsecure: isObsecure,
@@ -86,7 +102,7 @@ class _SignupPageState extends State<SignupPage> {
                               width: 10,
                             ),
                             Text(
-                              "Door een account aan te maken, gaat u akkoord \nmet onzeAlgemene voorwaarden",
+                              "Door een account aan te maken, gaat u akkoord \nmet onze Algemene voorwaarden",
                               style: GoogleFonts.ubuntu(
                                 fontSize: 14,
                                 color: Colors.white,
@@ -98,10 +114,12 @@ class _SignupPageState extends State<SignupPage> {
                           ],
                         ),
                       ),
-                    ),
+                    ).paddingOnly(bottom: 20),
                     MaterialButton(
                       onPressed: () {
-                        formKey.currentState?.validate();
+                        //formKey.currentState?.validate();
+                        Navigator.pushNamed(context, ActivationPage.id,
+                            arguments: "signup");
                       },
                       height: 50,
                       shape: RoundedRectangleBorder(
@@ -128,7 +146,7 @@ class _SignupPageState extends State<SignupPage> {
                       ),
                     ),
                     SizedBox(
-                      height: 30,
+                      height: 10,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -165,7 +183,7 @@ class _SignupPageState extends State<SignupPage> {
   }
 }
 
-class ShapePainter extends CustomPainter {
+class LoginShapePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     var paintc = Paint()
