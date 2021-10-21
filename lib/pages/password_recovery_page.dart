@@ -36,9 +36,17 @@ class _PasswordRecoveryState extends State<PasswordRecovery> {
           painter: LoginShapePainter(),
           child: Column(
             children: [
-              SizedBox(
-                height: 250,
-              ),
+              IconButton(
+                onPressed: () {
+                  Navigator.pop(context, LoginPage.id);
+                },
+                icon: Icon(Ionicons.arrow_back),
+                color: Config.yallow,
+                iconSize: 30,
+              ).align(alignment: Alignment.topLeft).paddingOnly(
+                    top: 30,
+                  ),
+              Spacer(),
               DefaultInput(
                 controller: _currentPasswordController,
                 label: "huidige wachtwoord",
@@ -50,7 +58,7 @@ class _PasswordRecoveryState extends State<PasswordRecovery> {
                     isCurrentPasswordObsecure = !isCurrentPasswordObsecure;
                   });
                 },
-              ),
+              ).paddingOnly(top: 50),
               DefaultInput(
                 controller: _newPasswordController,
                 label: "nieuwe wachtwoord",
@@ -62,9 +70,8 @@ class _PasswordRecoveryState extends State<PasswordRecovery> {
                     isNewPasswordObsecure = !isNewPasswordObsecure;
                   });
                 },
-              ),
+              ).paddingOnly(bottom: 50),
               Container(
-                margin: EdgeInsets.only(top: 50, bottom: 50),
                 width: screenSize(context).width * .85,
                 child: RichText(
                   textAlign: TextAlign.center,
@@ -86,6 +93,7 @@ class _PasswordRecoveryState extends State<PasswordRecovery> {
                       ]),
                 ),
               ),
+              Spacer(),
               MaterialButton(
                 onPressed: () {
                   Navigator.pushNamed(context, LoginPage.id);
@@ -106,7 +114,7 @@ class _PasswordRecoveryState extends State<PasswordRecovery> {
                         )),
                   ),
                 ),
-              ),
+              ).paddingOnly(bottom: 50),
             ],
           ),
         ),

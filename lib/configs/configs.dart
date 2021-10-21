@@ -27,10 +27,24 @@ class Config {
   static const quiz_game = 'assets/images/games/choose.png';
   static const asign_game = 'assets/images/games/distribution.png';
 
+  static const emaii_sent = 'assets/images/email_sent.png';
+
   static const error_image = 'assets/images/error.png';
   static const Color yallow = Color(0xffebd216);
   static const Color perpel = Color(0xff303289);
   static const Color blue = Color(0xff1877f2);
   static const Color red = Color(0xffF14336);
-  static const Color green = Color(0xffebd216);
+  static bool isEmail(String email) {
+    String p =
+        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+    RegExp regExp = new RegExp(p);
+
+    return regExp.hasMatch(email);
+  }
+
+  static bool isPassword(String password) {
+    bool isPass = password.length >= 8 ? true : false;
+
+    return isPass;
+  }
 }

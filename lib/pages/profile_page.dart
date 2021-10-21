@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:soccer_app/pages/login_page.dart';
 import 'package:soccer_app/pages/signup_page.dart';
 
 import 'package:soccer_app/services/services.dart';
@@ -41,7 +42,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 height: 60,
               ),
               Container(
-                margin: EdgeInsets.only(left: 10, right: 10),
+                margin: EdgeInsets.only(left: 5, right: 5),
                 child: Row(
                   children: [
                     Container(
@@ -177,7 +178,7 @@ class _ProfilePageState extends State<ProfilePage> {
           children: [
             Container(
                 padding: EdgeInsets.all(10),
-                width: screenSize(context).width * .9,
+                width: screenSize(context).width * .92,
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(15),
@@ -258,11 +259,12 @@ class _ProfilePageState extends State<ProfilePage> {
     return Container(
       margin: EdgeInsets.only(top: 10),
       height: 70,
+      width: screenSize(context).width * .92,
       child: Row(
         children: [
           Container(
-            height: 65,
-            width: 65,
+            height: 60,
+            width: 60,
             child: Image.asset(
               "assets/images/football_1.png",
             ),
@@ -295,8 +297,8 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
           Spacer(),
           Container(
-            height: 65,
-            width: 65,
+            height: 60,
+            width: 60,
             child: Image.asset(
               "assets/images/football_1.png",
             ),
@@ -473,6 +475,46 @@ class _ProfilePageState extends State<ProfilePage> {
               Spacer(),
               Icon(Ionicons.arrow_forward)
             ],
+          ),
+        ),
+        Divider(
+          endIndent: 20,
+          indent: 20,
+          height: 2,
+          thickness: 1.5,
+          color: Colors.grey.withOpacity(0.8),
+        ),
+        InkWell(
+          onTap: () {
+            Navigator.pushReplacementNamed(context, LoginPage.id);
+          },
+          child: Container(
+            margin: EdgeInsets.all(25),
+            child: Row(
+              children: [
+                Icon(
+                  Ionicons.log_out_outline,
+                  color: Colors.redAccent,
+                ),
+                SizedBox(
+                  width: 20,
+                ),
+                RichText(
+                    text: TextSpan(
+                  text: "Log out",
+                  style: GoogleFonts.ubuntu(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.redAccent,
+                  ),
+                )),
+                Spacer(),
+                Icon(
+                  Ionicons.arrow_forward,
+                  color: Colors.redAccent,
+                )
+              ],
+            ),
           ),
         ),
         Divider(

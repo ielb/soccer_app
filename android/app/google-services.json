@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "491600413895",
+    "project_id": "jongsintgillis-9982a",
+    "storage_bucket": "jongsintgillis-9982a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:491600413895:android:1fc5614fc79e4dbaceaae2",
+        "android_client_info": {
+          "package_name": "com.tingis.soccer_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "491600413895-lr2ahfidk6d5ff56rebh5en3q7hdtmjn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tingis.soccer_app",
+            "certificate_hash": "100fdf503a7cc3475d7065a76bb2cbb45b957acf"
+          }
+        },
+        {
+          "client_id": "491600413895-82d3ovfhu8akp2a82gj4qgtml5ni8i20.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBl_5BPR8CtnF0CJU_HzrAhMpEinf6ZLIk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "491600413895-82d3ovfhu8akp2a82gj4qgtml5ni8i20.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -44,29 +44,29 @@ class _OnBoardingState extends State<OnBoarding> {
                     });
                   },
                   itemBuilder: (_, i) {
-                    return Padding(
-                      padding: const EdgeInsets.all(40),
-                      child: Column(
-                        children: [
-                          Image.asset(contents[i].image),
-                          Text(
-                            contents[i].title,
-                            style: GoogleFonts.ubuntu(
-                                fontSize: 35,
-                                color: Config.perpel,
-                                fontWeight: FontWeight.w700),
-                          ),
-                          SizedBox(height: 20),
-                          Text(
-                            contents[i].discription,
-                            textAlign: TextAlign.center,
-                            style: GoogleFonts.ubuntu(
-                              fontSize: 18,
+                    return Column(
+                      children: [
+                        Image.asset(
+                          contents[i].image,
+                          height: 280,
+                        ),
+                        Text(
+                          contents[i].title,
+                          style: GoogleFonts.ubuntu(
+                              fontSize: 35,
                               color: Config.perpel,
-                            ),
-                          )
-                        ],
-                      ),
+                              fontWeight: FontWeight.w700),
+                        ),
+                        SizedBox(height: 20),
+                        Text(
+                          contents[i].discription,
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.ubuntu(
+                            fontSize: 18,
+                            color: Config.perpel,
+                          ),
+                        )
+                      ],
                     );
                   },
                 ),

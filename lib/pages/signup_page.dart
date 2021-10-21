@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
-import 'package:soccer_app/pages/activate_code_page.dart';
+import 'package:provider/provider.dart';
+import 'package:soccer_app/pages/email_verify.dart';
 import 'package:soccer_app/pages/login_page.dart';
+import 'package:soccer_app/providers/auth_provider.dart';
 import 'package:soccer_app/services/services.dart';
 import 'package:soccer_app/widgets/TextInput.dart';
 
@@ -19,12 +21,42 @@ class _SignupPageState extends State<SignupPage> {
   late TextEditingController _emailController,
       _userNameController,
       _passwordController;
+  late AuthProvider authProvider;
   @override
   void initState() {
     _emailController = TextEditingController();
     _passwordController = TextEditingController();
     _userNameController = TextEditingController();
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+      authProvider = Provider.of<AuthProvider>(context, listen: false);
+    });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _userNameController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  register() async {
+    bool isValidate = formKey.currentState!.validate();
+    if (isValidate && isChecked) {
+      bool result = await authProvider.register(
+          email: _emailController.text,
+          userName: _userNameController.text,
+          password: _passwordController.text);
+      if (result)
+        Navigator.pushNamed(context, ActivationPage.id, arguments: "signup");
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please agree to our terms of condition'),
+        ),
+      );
+    }
   }
 
   @override
@@ -33,7 +65,7 @@ class _SignupPageState extends State<SignupPage> {
       body: SingleChildScrollView(
         primary: true,
         child: Container(
-          height: screenSize(context).height,
+          height: screenSize(context).height + 11,
           width: screenSize(context).width,
           color: Config.perpel,
           child: CustomPaint(
@@ -59,6 +91,7 @@ class _SignupPageState extends State<SignupPage> {
                                   fontSize: 40, color: Colors.white))
                           .paddingOnly(left: 20, bottom: 10),
                     ),
+                    Spacer(),
                     DefaultInput(
                       controller: _emailController,
                       label: "Email",
@@ -67,6 +100,7 @@ class _SignupPageState extends State<SignupPage> {
                     DefaultInput(
                       controller: _userNameController,
                       label: "Gebruikersnaam",
+                      isText: true,
                       icon: Ionicons.person_outline,
                     ),
                     DefaultInput(
@@ -96,7 +130,9 @@ class _SignupPageState extends State<SignupPage> {
                               isChecked
                                   ? Ionicons.checkbox_outline
                                   : Ionicons.square_outline,
-                              color: Colors.greenAccent,
+                              color: !isChecked
+                                  ? Colors.redAccent
+                                  : Colors.greenAccent,
                             ),
                             SizedBox(
                               width: 10,
@@ -105,21 +141,22 @@ class _SignupPageState extends State<SignupPage> {
                               "Door een account aan te maken, gaat u akkoord \nmet onze Algemene voorwaarden",
                               style: GoogleFonts.ubuntu(
                                 fontSize: 14,
-                                color: Colors.white,
+                                color: !isChecked
+                                    ? Colors.redAccent
+                                    : Colors.white,
                               ),
                               softWrap: true,
                               maxLines: 3,
                               overflow: TextOverflow.visible,
-                            ).paddingAll(10).paddingOnly(top: 10)
+                            )
                           ],
                         ),
                       ),
-                    ).paddingOnly(bottom: 20),
+                    ),
+                    Spacer(),
                     MaterialButton(
                       onPressed: () {
-                        //formKey.currentState?.validate();
-                        Navigator.pushNamed(context, ActivationPage.id,
-                            arguments: "signup");
+                        register();
                       },
                       height: 50,
                       shape: RoundedRectangleBorder(
@@ -194,7 +231,7 @@ class LoginShapePainter extends CustomPainter {
 
     var pathc = Path();
     pathc.addOval(Rect.fromCircle(
-      center: Offset(size.width * .96, size.height * .08),
+      center: Offset(size.width * .96, size.height * .05),
       radius: 170,
     ));
     canvas.drawPath(pathc, paintc);

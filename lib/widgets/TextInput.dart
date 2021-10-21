@@ -8,12 +8,14 @@ class DefaultInput extends StatelessWidget {
       required this.label,
       required this.icon,
       this.showPassword,
+      this.isText = true,
       this.isObsecure = false,
       this.isPassword = false});
   final String label;
   final IconData icon;
   final bool isObsecure;
   final bool isPassword;
+  final bool isText;
   final Function()? showPassword;
   final TextEditingController controller;
 
@@ -32,14 +34,26 @@ class DefaultInput extends StatelessWidget {
           child: TextFormField(
             controller: controller,
             validator: (value) {
-              if (value == null || value.isEmpty) {
-                if (!isPassword) {
-                  return "Email is required";
-                } else
-                  return "password is required";
+              if (!isText) {
+                if (value == null || value.isEmpty) {
+                  if (!isPassword) {
+                    return "Email is required";
+                  } else
+                    return "password is required";
+                } else {
+                  if (!isPassword) {
+                    if (!Config.isEmail(value)) {
+                      return "Please add a valid email";
+                    }
+                  } else if (!Config.isPassword(value)) {
+                    return "Weak password  lenght > 8";
+                  }
+                }
               }
             },
-            keyboardType: TextInputType.emailAddress,
+            keyboardType: isPassword
+                ? TextInputType.visiblePassword
+                : TextInputType.emailAddress,
             style: GoogleFonts.ubuntu(fontSize: 16, color: Colors.white),
             obscureText: isObsecure,
             decoration: InputDecoration(

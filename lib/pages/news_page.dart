@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:soccer_app/models/news_model.dart';
 import 'package:soccer_app/pages/news_view_page.dart';
 import 'package:soccer_app/pages/signup_page.dart';
+import 'package:soccer_app/providers/news_provider.dart';
 
 import 'package:soccer_app/services/services.dart';
 import 'package:soccer_app/widgets/home_app_bar_widget.dart';
@@ -14,6 +17,24 @@ class NewsPage extends StatefulWidget {
 }
 
 class _NewsPageState extends State<NewsPage> {
+  late WordpressContentProvider wordpressContentProvider;
+  bool isCalled = false;
+  Future<List<NewsModel>> newsData = Future.value(List.empty());
+
+  @override
+  void didChangeDependencies() {
+    if (!isCalled) {
+      wordpressContentProvider =
+          Provider.of<WordpressContentProvider>(context, listen: false);
+      wordpressContentProvider.loadNews();
+      setState(() {
+        isCalled = true;
+      });
+    }
+
+    super.didChangeDependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,20 +61,20 @@ class _NewsPageState extends State<NewsPage> {
               ),
               ListView.builder(
                 primary: false,
-                itemCount: 5,
+                itemCount: wordpressContentProvider.news.length,
                 itemExtent: 200,
                 shrinkWrap: true,
                 scrollDirection: Axis.vertical,
                 itemBuilder: (BuildContext context, int index) {
                   return InkWell(
                     onTap: () {
-                      Navigator.pushNamed(context, NewsView.id);
+                      Navigator.pushNamed(context, NewsView.id,
+                          arguments: index);
                     },
                     child: NewsWidget(
-                        title: "Lorem Ipsum",
-                        date: "17/10/2021",
-                        content:
-                            "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression. Le Lorem Ipsum est le faux texte standard de l'imprimerie depuis les années 1500, quand un imprimeur anonyme assembla ensemble des morceaux de texte pour réaliser un livre spécimen de polices de texte. Il n'a pas fait que survivre cinq siècles, mais s'est aussi adapté à la bureautique informatique, sans que son contenu n'en soit modifié. Il a été popularisé dans les années 1960 grâce à la vente de feuilles Letraset contenant des passages du Lorem Ipsum, et, plus récemment, par son inclusion dans des applications de mise en page de texte, comme Aldus PageMaker.",
+                        title: wordpressContentProvider.news[index].title,
+                        date: wordpressContentProvider.news[index].date,
+                        content: wordpressContentProvider.news[index].content,
                         image_url:
                             "https://thepressfree.com/wp-content/uploads/2021/09/3228313-66083528-2560-1440.jpg"),
                   );
@@ -64,5 +85,42 @@ class _NewsPageState extends State<NewsPage> {
         ),
       ),
     ));
+  }
+
+  Widget newsContent() {
+    return FutureBuilder<List<NewsModel>>(
+        future: newsData,
+        builder: (context, snapchot) {
+          if (snapchot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          if (!snapchot.hasData) {
+            return Center(
+              child: Text('There is no new at the moment'),
+            );
+          }
+          return ListView.builder(
+            primary: false,
+            itemCount: snapchot.data!.length,
+            itemExtent: 200,
+            shrinkWrap: true,
+            scrollDirection: Axis.vertical,
+            itemBuilder: (BuildContext context, int index) {
+              return InkWell(
+                onTap: () {
+                  Navigator.pushNamed(context, NewsView.id, arguments: index);
+                },
+                child: NewsWidget(
+                    title: snapchot.data![index].title,
+                    date: snapchot.data![index].date,
+                    content: snapchot.data![index].content,
+                    image_url:
+                        "https://thepressfree.com/wp-content/uploads/2021/09/3228313-66083528-2560-1440.jpg"),
+              );
+            },
+          );
+        });
   }
 }

@@ -1,8 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:soccer_app/pages/PagesControlle.dart';
-import 'package:soccer_app/pages/activate_code_page.dart';
+import 'package:soccer_app/pages/email_verify.dart';
 import 'package:soccer_app/pages/forgert_password_page.dart';
 import 'package:soccer_app/pages/games_page.dart';
 import 'package:soccer_app/pages/home_page.dart';
@@ -15,9 +16,17 @@ import 'package:soccer_app/pages/profile_page.dart';
 import 'package:soccer_app/pages/signup_page.dart';
 import 'package:soccer_app/pages/login_page.dart';
 import 'package:soccer_app/pages/splash.dart';
+import 'package:soccer_app/providers/auth_provider.dart';
+import 'package:soccer_app/providers/news_provider.dart';
 
 void main() async {
-  runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized(); // Add this
+
+  await Firebase.initializeApp();
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(create: (context) => AuthProvider()),
+    ChangeNotifierProvider(create: (context) => WordpressContentProvider()),
+  ], child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
-import 'package:soccer_app/pages/activate_code_page.dart';
+import 'package:soccer_app/pages/email_verify.dart';
 import 'package:soccer_app/pages/signup_page.dart';
 import 'package:soccer_app/services/services.dart';
 import 'package:soccer_app/widgets/TextInput.dart';
@@ -33,9 +33,6 @@ class _PasswordRecoveryPageState extends State<PasswordRecoveryPage> {
           painter: LoginShapePainter(),
           child: Column(
             children: [
-              SizedBox(
-                height: 50,
-              ),
               IconButton(
                 onPressed: () {
                   Navigator.pop(context);
@@ -45,16 +42,20 @@ class _PasswordRecoveryPageState extends State<PasswordRecoveryPage> {
                 iconSize: 30,
               )
                   .align(alignment: Alignment.topLeft)
-                  .paddingOnly(top: 10, left: 10),
+                  .paddingOnly(top: 40, left: 10),
+              Spacer(),
               Align(
                 alignment: Alignment.topLeft,
                 child: Text("Wachtwoord\nResetten",
                         style: GoogleFonts.ubuntu(
                             fontSize: 38, color: Config.yallow))
-                    .paddingOnly(top: 70, left: 20, bottom: 20),
+                    .paddingOnly(
+                  left: 20,
+                ),
               ),
+              Spacer(),
               Container(
-                  margin: EdgeInsets.only(bottom: 50, left: 20),
+                  margin: EdgeInsets.only(left: 20),
                   child: Text(
                     "voer uw e-mailadres in om uw wachtwoord opnieuw in te stellen",
                     style: GoogleFonts.ubuntu(
@@ -62,11 +63,13 @@ class _PasswordRecoveryPageState extends State<PasswordRecoveryPage> {
                         color: Config.yallow,
                         fontWeight: FontWeight.w400),
                   )),
+              Spacer(),
               DefaultInput(
                 controller: _emailController,
                 label: "Gebruikersnaam of email",
                 icon: Ionicons.person_outline,
               ),
+              Spacer(),
               MaterialButton(
                 onPressed: () {
                   Navigator.pushNamed(context, ActivationPage.id,
@@ -79,7 +82,7 @@ class _PasswordRecoveryPageState extends State<PasswordRecoveryPage> {
                 color: Config.yallow,
                 child: Container(
                   padding: EdgeInsets.all(10),
-                  width: screenSize(context).width * .50,
+                  width: screenSize(context).width * .55,
                   child: Row(
                     children: [
                       Text("Code verzenden",
@@ -95,7 +98,7 @@ class _PasswordRecoveryPageState extends State<PasswordRecoveryPage> {
                     ],
                   ),
                 ),
-              ).paddingOnly(top: 100),
+              ).paddingOnly(bottom: 50),
             ],
           ),
         ),

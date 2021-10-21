@@ -2,7 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:soccer_app/pages/PagesControlle.dart';
 import 'package:soccer_app/pages/login_page.dart';
+import 'package:soccer_app/preferences/prefs.dart';
 
 import 'package:soccer_app/services/services.dart';
 
@@ -20,9 +22,18 @@ class _SplashState extends State<Splash> {
   @override
   void initState() {
     _timer = Timer(Duration(seconds: 5), () {
-      Navigator.pushNamed(context, LoginPage.id);
+      checkAuth();
     });
     super.initState();
+  }
+
+  void checkAuth() async {
+    String? uid = await Prefs.instance.getUid();
+    if (uid != null) {
+      Navigator.pushReplacementNamed(context, PageControlle.id);
+    } else {
+      Navigator.pushReplacementNamed(context, LoginPage.id);
+    }
   }
 
   @override
