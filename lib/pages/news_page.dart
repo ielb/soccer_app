@@ -26,13 +26,17 @@ class _NewsPageState extends State<NewsPage> {
     if (!isCalled) {
       wordpressContentProvider =
           Provider.of<WordpressContentProvider>(context, listen: false);
-      wordpressContentProvider.loadNews();
+      load();
       setState(() {
         isCalled = true;
       });
     }
 
     super.didChangeDependencies();
+  }
+
+  load() async {
+    newsData = wordpressContentProvider.loadNews();
   }
 
   @override
@@ -53,33 +57,35 @@ class _NewsPageState extends State<NewsPage> {
               ),
               CustomAppBar(
                 username: "Leila",
+                avatar: Config.avatar,
                 points: 34,
                 niveau: 3,
               ),
               SizedBox(
                 height: 80,
               ),
-              ListView.builder(
-                primary: false,
-                itemCount: wordpressContentProvider.news.length,
-                itemExtent: 200,
-                shrinkWrap: true,
-                scrollDirection: Axis.vertical,
-                itemBuilder: (BuildContext context, int index) {
-                  return InkWell(
-                    onTap: () {
-                      Navigator.pushNamed(context, NewsView.id,
-                          arguments: index);
-                    },
-                    child: NewsWidget(
-                        title: wordpressContentProvider.news[index].title,
-                        date: wordpressContentProvider.news[index].date,
-                        content: wordpressContentProvider.news[index].content,
-                        image_url:
-                            "https://thepressfree.com/wp-content/uploads/2021/09/3228313-66083528-2560-1440.jpg"),
-                  );
-                },
-              ),
+              newsContent(),
+              // ListView.builder(
+              //   primary: false,
+              //   itemCount: wordpressContentProvider.news.length,
+              //   itemExtent: 200,
+              //   shrinkWrap: true,
+              //   scrollDirection: Axis.vertical,
+              //   itemBuilder: (BuildContext context, int index) {
+              //     return InkWell(
+              //       onTap: () {
+              //         Navigator.pushNamed(context, NewsView.id,
+              //             arguments: index);
+              //       },
+              //       child: NewsWidget(
+              //           title: wordpressContentProvider.news[index].title,
+              //           date: wordpressContentProvider.news[index].date,
+              //           content: wordpressContentProvider.news[index].content,
+              //           image_url:
+              //               "https://thepressfree.com/wp-content/uploads/2021/09/3228313-66083528-2560-1440.jpg"),
+              //     );
+              //   },
+              // ),
             ],
           ),
         ),
@@ -108,14 +114,16 @@ class _NewsPageState extends State<NewsPage> {
             shrinkWrap: true,
             scrollDirection: Axis.vertical,
             itemBuilder: (BuildContext context, int index) {
+              print("new s ${snapchot.data![index].content?.length}");
               return InkWell(
                 onTap: () {
-                  Navigator.pushNamed(context, NewsView.id, arguments: index);
+                  Navigator.pushNamed(context, NewsView.id,
+                      arguments: snapchot.data![index]);
                 },
                 child: NewsWidget(
                     title: snapchot.data![index].title,
                     date: snapchot.data![index].date,
-                    content: snapchot.data![index].content,
+                    content: snapchot.data![index].content.toString(),
                     image_url:
                         "https://thepressfree.com/wp-content/uploads/2021/09/3228313-66083528-2560-1440.jpg"),
               );

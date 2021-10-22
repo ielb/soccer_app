@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:provider/provider.dart';
+import 'package:soccer_app/models/news_model.dart';
+
 import 'package:soccer_app/providers/news_provider.dart';
 import 'package:soccer_app/services/services.dart';
 
@@ -13,15 +16,14 @@ class NewsView extends StatefulWidget {
 class _NewsViewState extends State<NewsView> {
   late WordpressContentProvider newsProvider;
   bool isCalled = false;
-  late int index;
+  late NewsModel news;
 
   @override
   void didChangeDependencies() {
     if (!isCalled) {
       newsProvider =
           Provider.of<WordpressContentProvider>(context, listen: false);
-      index = ModalRoute.of(context)!.settings.arguments as int;
-      newsProvider.loadNews();
+      news = ModalRoute.of(context)!.settings.arguments as NewsModel;
       setState(() {
         isCalled = true;
       });
@@ -32,6 +34,8 @@ class _NewsViewState extends State<NewsView> {
 
   @override
   Widget build(BuildContext context) {
+    String htmlData = news.content ?? '';
+    print(news.content?.length);
     return Scaffold(
       backgroundColor: Colors.white,
       body: CustomScrollView(slivers: [
@@ -86,7 +90,7 @@ class _NewsViewState extends State<NewsView> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "${newsProvider.news[index].title}",
+                  "${news.title}",
                   style: GoogleFonts.ubuntu(
                       fontSize: 26,
                       fontWeight: FontWeight.w600,
@@ -96,7 +100,7 @@ class _NewsViewState extends State<NewsView> {
                   height: 10,
                 ),
                 Text(
-                  "${newsProvider.news[index].date}",
+                  "${news.date}",
                   style: GoogleFonts.ubuntu(
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
@@ -105,10 +109,38 @@ class _NewsViewState extends State<NewsView> {
                 SizedBox(
                   height: 20,
                 ),
-                Text(
-                  "${newsProvider.news[index].content}",
-                  style: GoogleFonts.ubuntu(fontSize: 18, color: Colors.black),
-                ),
+                Html(
+                  data: htmlData,
+                  style: {
+                    "img": Style(margin: EdgeInsets.all(5)),
+                    "table": Style(
+                      width: screenSize(context).width,
+                      backgroundColor: Color.fromARGB(0x50, 0xee, 0xee, 0xee),
+                    ),
+                    "tr": Style(
+                      border: Border(bottom: BorderSide(color: Colors.grey)),
+                    ),
+                    "th": Style(
+                      padding: EdgeInsets.all(6),
+                      backgroundColor: Colors.grey,
+                    ),
+                    "td": Style(
+                      padding: EdgeInsets.all(6),
+                      alignment: Alignment.topLeft,
+                    ),
+                    'h5':
+                        Style(maxLines: 2, textOverflow: TextOverflow.ellipsis),
+                  },
+                  customRender: {
+                    "table": (context, child) {
+                      return SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: (context.tree as TableLayoutElement)
+                            .toWidget(context),
+                      );
+                    },
+                  },
+                )
               ],
             )),
           )

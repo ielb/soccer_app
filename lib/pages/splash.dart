@@ -2,9 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:provider/provider.dart';
 import 'package:soccer_app/pages/PagesControlle.dart';
 import 'package:soccer_app/pages/login_page.dart';
 import 'package:soccer_app/preferences/prefs.dart';
+import 'package:soccer_app/providers/user_provider.dart';
 
 import 'package:soccer_app/services/services.dart';
 
@@ -19,6 +21,7 @@ class Splash extends StatefulWidget {
 
 class _SplashState extends State<Splash> {
   late Timer _timer;
+  late UserProvider userProvider;
   @override
   void initState() {
     _timer = Timer(Duration(seconds: 5), () {
@@ -29,7 +32,9 @@ class _SplashState extends State<Splash> {
 
   void checkAuth() async {
     String? uid = await Prefs.instance.getUid();
+    userProvider = Provider.of<UserProvider>(context, listen: false);
     if (uid != null) {
+      userProvider.getAuthUser(uid);
       Navigator.pushReplacementNamed(context, PageControlle.id);
     } else {
       Navigator.pushReplacementNamed(context, LoginPage.id);

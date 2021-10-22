@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:soccer_app/pages/PagesControlle.dart';
 import 'package:soccer_app/pages/email_verify.dart';
@@ -13,18 +14,34 @@ import 'package:soccer_app/pages/notification_page.dart';
 import 'package:soccer_app/pages/onBoarding.dart';
 import 'package:soccer_app/pages/password_recovery_page.dart';
 import 'package:soccer_app/pages/profile_page.dart';
+import 'package:soccer_app/pages/search_page.dart';
 import 'package:soccer_app/pages/signup_page.dart';
 import 'package:soccer_app/pages/login_page.dart';
 import 'package:soccer_app/pages/splash.dart';
 import 'package:soccer_app/providers/auth_provider.dart';
+import 'package:soccer_app/providers/chat_provider.dart';
+import 'package:soccer_app/providers/firestore_provider.dart';
+import 'package:soccer_app/providers/locator.dart';
 import 'package:soccer_app/providers/news_provider.dart';
+import 'package:soccer_app/providers/user_provider.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized(); // Add this
+  WidgetsFlutterBinding.ensureInitialized();
 
-  await Firebase.initializeApp();
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+  await Firebase.initializeApp(
+      options: FirebaseOptions(
+          apiKey: "AIzaSyBl_5BPR8CtnF0CJU_HzrAhMpEinf6ZLIk",
+          appId: "1:491600413895:android:1fc5614fc79e4dbaceaae2",
+          messagingSenderId: "491600413895",
+          projectId: "jongsintgillis-9982a"));
+  setupLocator();
   runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(create: (context) => UserProvider()),
+    ChangeNotifierProvider(create: (context) => FirestoreProvider()),
     ChangeNotifierProvider(create: (context) => AuthProvider()),
+    ChangeNotifierProvider(create: (context) => ChatProvider()),
     ChangeNotifierProvider(create: (context) => WordpressContentProvider()),
   ], child: MyApp()));
 }
@@ -83,6 +100,10 @@ Route<dynamic> routes(RouteSettings settings) {
     case NotificationPage.id:
       return CupertinoPageRoute(
           builder: (_) => NotificationPage(), settings: settings);
+
+    case SearchPage.id:
+      return MaterialPageRoute(
+          builder: (_) => SearchPage(), settings: settings);
 
     default:
       return CupertinoPageRoute(builder: (_) => Splash(), settings: settings);

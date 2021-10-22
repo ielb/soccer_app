@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:soccer_app/models/user_model.dart';
 import 'package:soccer_app/preferences/prefs.dart';
@@ -60,12 +61,14 @@ class AuthProvider extends BaseProvider {
         users.doc(userCredential.user!.uid).set(UserModel(
                 uid: userCredential.user!.uid,
                 email: email.trim(),
-                name: userName.trim())
+                name: userName.trim(),
+                avatar: userCredential.user!.photoURL ?? '')
             .toMap());
         setUser((UserModel(
             uid: userCredential.user!.uid,
             email: email.trim(),
-            name: userName.trim())));
+            name: userName.trim(),
+            avatar: userCredential.user!.photoURL ?? '')));
         Prefs.instance.setUid(userCredential.user!.uid);
         return true;
       } else
@@ -115,7 +118,8 @@ class AuthProvider extends BaseProvider {
           UserModel userModel = UserModel(
               uid: userCredential.user!.uid,
               name: userCredential.user!.displayName ?? '',
-              email: userCredential.user!.email ?? '');
+              email: userCredential.user!.email ?? '',
+              avatar: userCredential.user!.photoURL ?? '');
           users.doc(userCredential.user!.uid).set(userModel.toMap());
           setUser(userModel);
           Prefs.instance.setUid(userCredential.user!.uid);
@@ -126,6 +130,39 @@ class AuthProvider extends BaseProvider {
     } on FirebaseAuthException catch (e) {
       print(e.message);
     }
+    return false;
+  }
+
+  signInWithFacebook() async {
+    try {
+      setBusy(true);
+      final LoginResult result = await FacebookAuth.instance.login();
+      print(result.message);
+      if (result.status == LoginStatus.success) {
+        print("Success");
+        final OAuthCredential credential =
+            FacebookAuthProvider.credential(result.accessToken!.token);
+        UserCredential userCredential =
+            await FirebaseAuth.instance.signInWithCredential(credential);
+        if (userCredential.user != null) {
+          UserModel userModel = UserModel(
+              uid: userCredential.user!.uid,
+              name: userCredential.user!.displayName ?? '',
+              email: userCredential.user!.email ?? '',
+              avatar: userCredential.user!.photoURL ?? '');
+          users.doc(userCredential.user!.uid).set(userModel.toMap());
+          setUser(userModel);
+          Prefs.instance.setUid(userCredential.user!.uid);
+          setBusy(false);
+          return true;
+        } else
+          setBusy(false);
+        return false;
+      }
+    } on FirebaseAuthException catch (e) {
+      print(e.message);
+    }
+    setBusy(false);
     return false;
   }
 }

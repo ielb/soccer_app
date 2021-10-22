@@ -38,6 +38,7 @@ class _HomePageState extends State<HomePage> {
             ),
             CustomAppBar(
               username: "Leila",
+              avatar: Config.avatar,
               points: 34,
               niveau: 3,
             )

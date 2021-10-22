@@ -2,10 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
-import 'package:provider/provider.dart';
 import 'package:soccer_app/pages/home_page.dart';
 import 'package:soccer_app/pages/signup_page.dart';
-import 'package:soccer_app/providers/auth_provider.dart';
 import 'package:soccer_app/services/services.dart';
 
 class ActivationPage extends StatefulWidget {
@@ -29,16 +27,8 @@ class _ActivationPageState extends State<ActivationPage> {
 
   @override
   void didChangeDependencies() {
-    AuthProvider auth = Provider.of<AuthProvider>(context, listen: false);
     timer = Timer.periodic(Duration(seconds: 5), (timer) {
-      print(timer.tick);
-      auth.auth.currentUser!.reload();
-      if (auth.auth.currentUser!.emailVerified) {
-        timer.cancel();
-        Navigator.pushReplacementNamed(context, HomePage.id);
-      } else {
-        auth.auth.currentUser!.sendEmailVerification();
-      }
+      Navigator.pushReplacementNamed(context, HomePage.id);
     });
     super.didChangeDependencies();
   }

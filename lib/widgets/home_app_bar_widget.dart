@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:soccer_app/pages/notification_page.dart';
@@ -5,8 +6,12 @@ import 'package:soccer_app/services/services.dart';
 
 class CustomAppBar extends StatelessWidget {
   const CustomAppBar(
-      {required this.username, required this.niveau, required this.points});
+      {required this.username,
+      required this.avatar,
+      required this.niveau,
+      required this.points});
   final username;
+  final avatar;
   final niveau;
   final points;
 
@@ -15,14 +20,23 @@ class CustomAppBar extends StatelessWidget {
     return Container(
         child: Row(
       children: [
-        Container(
-          height: 80,
-          width: 80,
-          child: CircleAvatar(
-            backgroundImage: AssetImage(Config.kidImage),
+        ClipOval(
+          child: CachedNetworkImage(
+            imageUrl: avatar,
+            errorWidget: (context, _, err) {
+              return Image.asset(Config.error_image);
+            },
+            progressIndicatorBuilder: (context, _, dow) =>
+                CircularProgressIndicator(
+              value: dow.progress,
+              color: Config.yallow,
+            ),
+            width: 80.0,
+            height: 80.0,
           ),
         ),
         Container(
+          width: 110,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

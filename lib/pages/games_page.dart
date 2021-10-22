@@ -36,6 +36,7 @@ class _GamesPageState extends State<GamesPage> {
               ),
               CustomAppBar(
                 username: "Leila",
+                avatar: Config.avatar,
                 points: 34,
                 niveau: 3,
               ),

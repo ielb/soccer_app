@@ -4,6 +4,7 @@ class UserModel {
   String uid = '';
   String name = '';
   String email = '';
+  String? avatar;
   int? age;
   String? team;
   String? coach;
@@ -11,6 +12,7 @@ class UserModel {
     required this.uid,
     required this.name,
     required this.email,
+    this.avatar,
     this.age,
     this.team,
     this.coach,
@@ -20,6 +22,7 @@ class UserModel {
     String? uid,
     String? name,
     String? email,
+    String? avatar,
     int? age,
     String? team,
     String? coach,
@@ -28,6 +31,7 @@ class UserModel {
       uid: uid ?? this.uid,
       name: name ?? this.name,
       email: email ?? this.email,
+      avatar: avatar ?? this.avatar,
       age: age ?? this.age,
       team: team ?? this.team,
       coach: coach ?? this.coach,
@@ -39,6 +43,7 @@ class UserModel {
       'uid': uid,
       'name': name,
       'email': email,
+      'avatar': avatar,
       'age': age,
       'team': team,
       'coach': coach,
@@ -50,6 +55,7 @@ class UserModel {
       uid: map['uid'],
       name: map['name'],
       email: map['email'],
+      avatar: map['avatar'],
       age: map['age'],
       team: map['team'],
       coach: map['coach'],
@@ -63,7 +69,7 @@ class UserModel {
 
   @override
   String toString() {
-    return 'UserModel(uid: $uid, name: $name, email: $email, age: $age, team: $team, coach: $coach)';
+    return 'UserModel(uid: $uid, name: $name, email: $email, avatar: $avatar, age: $age, team: $team, coach: $coach)';
   }
 
   @override
@@ -74,6 +80,7 @@ class UserModel {
         other.uid == uid &&
         other.name == name &&
         other.email == email &&
+        other.avatar == avatar &&
         other.age == age &&
         other.team == team &&
         other.coach == coach;
@@ -84,6 +91,7 @@ class UserModel {
     return uid.hashCode ^
         name.hashCode ^
         email.hashCode ^
+        avatar.hashCode ^
         age.hashCode ^
         team.hashCode ^
         coach.hashCode;

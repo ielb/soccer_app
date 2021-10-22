@@ -26,7 +26,8 @@ class Config {
   static const memory_game = 'assets/images/games/card-games.png';
   static const quiz_game = 'assets/images/games/choose.png';
   static const asign_game = 'assets/images/games/distribution.png';
-
+  static const avatar =
+      "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib";
   static const emaii_sent = 'assets/images/email_sent.png';
 
   static const error_image = 'assets/images/error.png';

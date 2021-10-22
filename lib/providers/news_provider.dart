@@ -6,17 +6,22 @@ class WordpressContentProvider extends BaseProvider {
   List<NewsModel> news = List.empty(growable: true);
   String baseUrl = 'https://jongsintgillis.be/';
 
-  loadNews() async {
+  Future<List<NewsModel>> loadNews() async {
     final api = WordPressAPI(baseUrl);
+
     final WPResponse res = await api.posts.fetch();
     for (Post post in res.data) {
-      print(post..featuredMedia.toString());
-      news.add(NewsModel(
+      print("lenght ${post.content?.length}");
+      NewsModel model = NewsModel(
           title: post.title,
-          content: WPUtils.parseHtml(post.content),
-          date: post.dateGmt));
+          content: post.content.toString(),
+          date: post.dateGmt);
+      print(model.content?.length);
+      news.add(model);
     }
+    print(news.length);
     notifyListeners();
+    return news;
   }
 
   loadCategories() async {}

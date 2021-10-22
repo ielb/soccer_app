@@ -22,6 +22,7 @@ class MatchesPage extends StatelessWidget {
             ),
             CustomAppBar(
               username: "Leila",
+              avatar: Config.avatar,
               points: 34,
               niveau: 3,
             )

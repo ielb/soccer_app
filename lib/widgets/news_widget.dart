@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:soccer_app/configs/configs.dart';
 import 'package:soccer_app/services/services.dart';
 
+// ignore: must_be_immutable
 class NewsWidget extends StatelessWidget {
   NewsWidget(
       {required this.title,
@@ -11,7 +12,7 @@ class NewsWidget extends StatelessWidget {
       required this.image_url});
   final title;
   final date;
-  final content;
+  String content;
   final image_url;
 
   @override
@@ -55,7 +56,7 @@ class NewsWidget extends StatelessWidget {
                       width: 200,
                       height: 100,
                       child: Text(
-                        "${content ?? ''}",
+                        "${content}",
                         softWrap: true,
                         maxLines: 5,
                         overflow: TextOverflow.ellipsis,

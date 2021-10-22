@@ -63,7 +63,18 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  facebookAuth() {}
+  facebookAuth() async {
+    var result = await authProvider.signInWithFacebook();
+    if (result) {
+      Navigator.pushReplacementNamed(context, PageControlle.id);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Something went wrong please try again'),
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
